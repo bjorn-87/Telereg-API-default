@@ -1,3 +1,5 @@
+/* eslint no-unused-vars: 0 */
+
 "use strict";
 
 const config = require('../config/config.json');
@@ -14,7 +16,7 @@ var logIncoming = function(req, res, next) {
 /**
  * Add routes for 404 and error handling
  * Catch 404 and forward to error handler
- */ 
+ */
 var fourOFourHandler = (req, res, next) => {
     var err = new Error("Not Found");
 
@@ -24,7 +26,7 @@ var fourOFourHandler = (req, res, next) => {
 
 /**
  * Errorhandler
- */ 
+ */
 var errorHandler = (err, req, res, next) => {
     if (res.headersSent) {
         return next(err);
@@ -43,25 +45,25 @@ var errorHandler = (err, req, res, next) => {
 
 /**
  * Function to verify azure token from client
- */ 
+ */
 var verifyToken = function (req, res, next) {
     let jwtToken = req.headers['authorization'];
 
     azureJWT.verify(jwtToken, config).then(function(decoded) {
         // success callback
-            console.log("valid");
-            next();
-        }, function(error){
-        // error callback
-            console.log("Not valid");
-            return res.status(401).json({
-                errors: {
-                    status: 401,
-                    title: "Authentication failed",
-                    detail: JSON.parse(error).message
-                }
-            });
+        console.log("valid");
+        next();
+    }, function(error) {
+    // error callback
+        console.log("Not valid");
+        return res.status(401).json({
+            errors: {
+                status: 401,
+                title: "Authentication failed",
+                detail: JSON.parse(error).message
+            }
         });
+    });
 };
 
 module.exports = {

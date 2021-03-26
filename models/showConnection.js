@@ -5,7 +5,7 @@ const sql = require("mssql");
 
 /**
  * Convert null values in object to strings
- * @param {array} recordset 
+ * @param {array} recordset
  * @returns array
  */
 function nullToString(recordset) {
@@ -19,15 +19,19 @@ function nullToString(recordset) {
     return recordset;
 }
 
+/**
+ *
+ * @param {*} qry
+ * @param {*} res
+ */
 var showConnection = async function(qry, res) {
-
     console.log("qry:", qry);
     var teleregId = qry.id,
         data = {
             "head": [],
             "line": []
         };
-    
+
     if (!teleregId) {
         res.status(404).json({
             data: {
@@ -36,12 +40,12 @@ var showConnection = async function(qry, res) {
             }
         });
     } else {
-        try {  
+        try {
             const pool = await db;
             let result1 = await pool.request()
                 .input('input_parameter', sql.VarChar, teleregId)
-                .query('SELECT * FROM Telereg WHERE Id = @input_parameter AND Deleted IS NULL')   
-            
+                .query('SELECT * FROM Telereg WHERE Id = @input_parameter AND Deleted IS NULL');
+
             // Header of the connectionschema
             let recordSet = nullToString(result1.recordset);
 
@@ -49,12 +53,12 @@ var showConnection = async function(qry, res) {
                 data.head = recordSet[0];
 
                 let number = data.head.Number;
-                
 
                 let result2 = await pool.request()
                     .input('input_parameter', sql.VarChar, number)
-                    .query('SELECT * FROM Teletr WHERE TeleregNumber = @input_parameter AND Deleted IS NULL ORDER BY Position')
-                
+                    .query('SELECT * FROM Teletr WHERE TeleregNumber = @input_parameter ' +
+                            'AND Deleted IS NULL ORDER BY Position');
+
                 // Wireconnections of the connectionschema
                 let recordSet2 = nullToString(result2.recordset);
 
@@ -64,52 +68,11 @@ var showConnection = async function(qry, res) {
             res.status(200).json({
                 data: data
             });
-
         } catch (err) {
             res.status(500);
-            res.send(err.message);  
+            res.send(err.message);
         }
     }
-}
+};
 
 module.exports = showConnection;
-
-
-    // try {  
-    //     const pool = await db;
-    //     await pool.request()
-    //         .input('input_parameter', sql.VarChar, qry.number)
-    //         .query('SELECT * FROM Telereg WHERE Number = @input_parameter', async function(err, result) {  
-    //         if (err) {  
-    //             console.log(err)  
-    //         } else {
-    //             // Adding result from
-    //             // console.log(queryOne);   
-    //             data.head = result.recordset;
-
-    //             await pool.request()
-    //             .input('input_parameter', sql.VarChar, qry.number)
-    //             .query('SELECT * FROM Teletr WHERE TeleregNumber = @input_parameter', function(err, result) {  
-    //             if (err) {  
-    //                 console.log(err)  
-    //             } else {  
-    //                 data.line = result.recordset;
-    //                 res.status(200).json({data: data});
-    //                 // console.log(data);  
-    //                 // res.json({"data": data});
-    //             }  
-    //         });
-    //             // console.log(data);  
-    //             // res.json(data);
-    //         }  
-    //     });
-    //     // console.log(result);
-    //     // if (data.head !== "") {
-    //         // }
-    //         // await console.log(number);
-
-    //     // res.json(data);
-    //     } catch (err) {
-    //         res.status(500)  
-    //         res.send(err.message)  
-    //     }

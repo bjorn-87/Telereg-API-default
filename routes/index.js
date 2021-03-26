@@ -13,7 +13,7 @@ router.get('/', function(req, res) {
             "/search": "Search Connections"
         }
     };
-    
+
     res.status(200).json(data);
 });
 
@@ -24,9 +24,6 @@ router.get('/all', function(req, res) {
 router.get('/search/', function(req, res) {
     search(req, res);
 });
-
-
-
 
 
 module.exports = router;
