@@ -1,6 +1,6 @@
 "use strict";
 
-const db = require("../db/db.js");
+const db = require("../../db/db.js");
 const sql = require("mssql");
 
 /**
@@ -16,25 +16,19 @@ var search = async function(req, res) {
             let search = qry.search;
             const pool = await db;
 
-            await pool.request()
+            const result = await pool.request()
                 .input('input_parameter', sql.VarChar, `%${search}%`)
                 .query('SELECT * FROM Telereg WHERE Number LIKE @input_parameter' +
                         ' OR Name LIKE @input_parameter' +
                         ' OR Address LIKE @input_parameter' +
-                        ' OR Func LIKE @input_parameter', function(err, result) {
-                    if (err) {
-                        console.log(err);
-                        res.status(500);
-                        res.send(err.message);
-                    } else {
-                        console.log(result);
-                        let data = {
-                            "data": result.recordset
-                        };
+                        ' OR Func LIKE @input_parameter');
 
-                        res.status(200).json(data);
-                    }
-                });
+            // console.log(result);
+            let data = {
+                "data": result.recordset
+            };
+
+            res.status(200).json(data);
         } catch (err) {
             console.log("Error");
             res.status(500);

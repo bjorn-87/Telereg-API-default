@@ -2,28 +2,19 @@
 
 const express = require("express");
 const router = express.Router();
-const showAll = require('../models/showAll.js');
-const search = require('../models/search.js');
 
 router.get('/', function(req, res) {
     const data = {
         routes: {
-            "/": "Shows this message",
-            "/all": "Shows all",
-            "/search": "Search Connections"
+            "GET /": "Shows this message",
+            "GET /headers":  {
+                "/": "Shows all headers",
+                "/search?search=<input>": "Search Headers"
+            },
         }
     };
 
     res.status(200).json(data);
 });
-
-router.get('/all', function(req, res) {
-    showAll(req, res);
-});
-
-router.get('/search/', function(req, res) {
-    search(req, res);
-});
-
 
 module.exports = router;
