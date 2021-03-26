@@ -23,20 +23,12 @@ var showConnection = async function(qry, res) {
 
     console.log("qry:", qry);
     var teleregId = qry.id,
-        api_key = qry.api_key,
         data = {
             "head": [],
             "line": []
         };
     
-    if (api_key !== "8888") {
-        res.status(500).json({
-            data: {
-                status: 500,
-                msg: "Api Key missing"
-            }
-        });
-    } else if (!teleregId) {
+    if (!teleregId) {
         res.status(404).json({
             data: {
                 status: 404,

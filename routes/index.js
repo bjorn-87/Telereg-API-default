@@ -21,9 +21,6 @@ router.get('/all', function(req, res) {
     showAll(req, res);
 });
 
-// router.get("/all", (req, res, next) => verifyToken(req, res, next),
-//     (req, res) => showAll(req, res));
-
 router.get('/search/', function(req, res) {
     search(req, res);
 });
