@@ -19,7 +19,7 @@ router.get('/search/', function(req, res) {
 // });
 
 router.post('/', function(req, res) {
-    newHeader(req, res);
+    newHeader(req.body, res);
 });
 
 module.exports = router;

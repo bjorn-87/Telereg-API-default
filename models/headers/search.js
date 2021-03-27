@@ -21,18 +21,21 @@ var search = async function(req, res) {
                 .query('SELECT * FROM Telereg WHERE Number LIKE @input_parameter' +
                         ' OR Name LIKE @input_parameter' +
                         ' OR Address LIKE @input_parameter' +
-                        ' OR Func LIKE @input_parameter');
+                        ' OR Func LIKE @input_parameter ORDER BY Number ASC');
 
-            // console.log(result);
             let data = {
                 "data": result.recordset
             };
 
             res.status(200).json(data);
         } catch (err) {
-            console.log("Error");
-            res.status(500);
-            res.send(err.message);
+            res.status(500).json({
+                "errors": {
+                    "status": 500,
+                    "Title": "INTERNAL SERVER ERROR",
+                    "detail": err.message
+                }
+            });
         }
     } else {
         res.status(404).json([{

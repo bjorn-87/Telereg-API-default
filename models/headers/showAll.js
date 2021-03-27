@@ -12,7 +12,7 @@ var showAll = async function(req, res) {
         const pool = await db;
 
         const result = await pool.request()
-            .query('SELECT * FROM Telereg');
+            .query('SELECT * FROM Telereg ORDER BY Number ASC');
 
         let data = {
             data: result.recordset

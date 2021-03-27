@@ -51,11 +51,9 @@ var verifyToken = function (req, res, next) {
 
     azureJWT.verify(jwtToken, config).then(function(decoded) {
         // success callback
-        console.log("valid");
         next();
     }, function(error) {
     // error callback
-        console.log("Not valid");
         return res.status(401).json({
             errors: {
                 status: 401,

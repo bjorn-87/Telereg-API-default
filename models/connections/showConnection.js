@@ -25,7 +25,6 @@ function nullToString(recordset) {
  * @param {*} res
  */
 var showConnection = async function(qry, res) {
-    console.log("qry:", qry);
     var teleregId = qry.id,
         data = {
             "head": [],

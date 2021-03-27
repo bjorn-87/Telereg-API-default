@@ -6,18 +6,18 @@ const sql = require("mssql");
 /**
  * Create a new header for connection schema
  */
-const newHeader = async function(req, res) {
-    let number,
-        name,
-        func,
-        address,
-        drawing,
-        apptype,
-        document,
-        userid,
-        apptypetwo,
-        userfullname,
-        other;
+const newHeader = async function(body, res) {
+    let number = body.number,
+        name = body.name,
+        func = body.func,
+        address = body.address,
+        drawing = body.drawing,
+        apptype = body.apptype,
+        document = body.document,
+        userid = body.userid,
+        apptypetwo = body.apptypetwo,
+        userfullname = body.userfullname,
+        other = body.other;
 
     if (number) {
         try {
@@ -36,7 +36,7 @@ const newHeader = async function(req, res) {
                     }
                 });
             } else {
-                const result = await pool.request()
+                await pool.request()
                     .input('number', sql.VarChar, number)
                     .input('name', sql.VarChar, name)
                     .input('func', sql.VarChar, func)
@@ -54,13 +54,15 @@ const newHeader = async function(req, res) {
                             '(@number, @name, @func, @address, @drawing, @apptype, @document, ' +
                             '@userid, @apptypetwo, @userfullname, @other)');
 
-                console.log(result);
+                const idNumber = await pool.request()
+                    .query('SELECT MAX(Id) AS NewId FROM Telereg');
 
                 res.status(201).json({
                     "data": {
                         "status": 201,
                         "title": "CREATED",
-                        "message": "Successfully created"
+                        "message": "Successfully created",
+                        "id": idNumber.recordset[0].NewId
                     }
                 });
             }
