@@ -24,8 +24,8 @@ function nullToString(recordset) {
  * @param {*} qry
  * @param {*} res
  */
-var showConnection = async function(qry, res) {
-    var teleregId = qry.id,
+var showConnection = async function(params, res) {
+    var teleregId = params.id,
         data = {
             "head": [],
             "line": []
@@ -33,9 +33,10 @@ var showConnection = async function(qry, res) {
 
     if (!teleregId) {
         res.status(404).json({
-            data: {
+            errors: {
                 status: 404,
-                msg: "Page not found"
+                title: "Not found",
+                detail: "Page not found"
             }
         });
     } else {
