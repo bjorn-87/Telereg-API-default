@@ -18,7 +18,8 @@ var search = async function(req, res) {
 
             const result = await pool.request()
                 .input('input_parameter', sql.VarChar, `%${search}%`)
-                .query('SELECT * FROM Telereg WHERE Number LIKE @input_parameter' +
+                .query('SELECT * FROM Telereg WHERE Deleted IS NULL AND ' +
+                        'Number LIKE @input_parameter' +
                         ' OR Name LIKE @input_parameter' +
                         ' OR Address LIKE @input_parameter' +
                         ' OR Func LIKE @input_parameter ORDER BY Number ASC');

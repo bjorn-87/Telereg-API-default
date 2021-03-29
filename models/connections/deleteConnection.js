@@ -10,7 +10,8 @@ const sql = require("mssql");
  */
 var deleteConnection = async function(params, res) {
     var teleregId = params.id,
-        deleted = new Date();
+        deleted = new Date(),
+        teleregNumber;
 
     if (!teleregId) {
         res.status(400).json({
@@ -29,13 +30,7 @@ var deleteConnection = async function(params, res) {
                     'AND Deleted IS NULL');
 
             if (searchForNumber.recordset[0]) {
-                let teleregNumber = searchForNumber.recordset[0].Number;
-
-                await pool.request()
-                    .input('deleted', sql.DateTime, deleted)
-                    .input('input_parameter', sql.VarChar, teleregId)
-                    .query('UPDATE Telereg SET Deleted = @deleted WHERE Id = @input_parameter ' +
-                        'AND Deleted IS NULL');
+                teleregNumber = searchForNumber.recordset[0].Number;
 
                 let searchTeletr = await pool.request()
                     .input('teleregnumber', sql.VarChar, teleregNumber)
@@ -43,15 +38,46 @@ var deleteConnection = async function(params, res) {
                         'AND Deleted IS NULL');
 
                 if (searchTeletr.recordset.length > 0) {
+                    const transaction = pool.transaction();
+
+                    try {
+                        await transaction.begin();
+
+                        await transaction.request()
+                            .input('deleted', sql.DateTime, deleted)
+                            .input('teleregnumber', sql.VarChar, teleregNumber)
+                            .query('UPDATE Teletr SET Deleted = @deleted ' +
+                                'WHERE TeleregNumber = @teleregnumber AND Deleted IS NULL');
+
+                        await transaction.request()
+                            .input('deleted', sql.DateTime, deleted)
+                            .input('input_parameter', sql.VarChar, teleregId)
+                            .query('UPDATE Telereg SET Deleted = @deleted ' +
+                            'WHERE Id = @input_parameter AND Deleted IS NULL');
+
+                        await transaction.commit();
+                        return res.status(204).send();
+                    } catch (err) {
+                        await transaction.rollback();
+                        return res.status(500).json({
+                            "error": {
+                                "status": 500,
+                                "title": "INTERNAL SERVER ERROR",
+                                "detail": "Transaction failed"
+                            }
+                        });
+                    }
+                } else {
                     await pool.request()
                         .input('deleted', sql.DateTime, deleted)
-                        .input('teleregnumber', sql.VarChar, teleregNumber)
-                        .query('UPDATE Teletr SET Deleted = @deleted ' +
-                            'WHERE TeleregNumber = @teleregnumber AND Deleted IS NULL');
+                        .input('input_parameter', sql.VarChar, teleregId)
+                        .query('UPDATE Telereg SET Deleted = @deleted ' +
+                            'WHERE Id = @input_parameter AND Deleted IS NULL');
+
+                    return res.status(204).send();
                 }
-                res.status(204).send();
             } else {
-                res.status(404).json({
+                return res.status(404).json({
                     "errors": {
                         "status": 404,
                         "title": "Not found",
