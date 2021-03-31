@@ -5,11 +5,11 @@ const sql = require("mssql");
 
 /**
  * Soft delete on a connection (header and lines)
- * @param {*} params
+ * @param {*} body
  * @param {*} res
  */
-var deleteConnection = async function(params, res) {
-    var teleregId = params.id,
+var deleteConnection = async function(body, res) {
+    var teleregId = body.id,
         deleted = new Date(),
         teleregNumber;
 
@@ -18,14 +18,14 @@ var deleteConnection = async function(params, res) {
             "errors": {
                 "status": 400,
                 "title": "Bad request",
-                "detail": "Param id not in URL"
+                "detail": "id not in body"
             }
         });
     } else {
         try {
             const pool = await db;
             let searchForNumber = await pool.request()
-                .input('input_parameter', sql.VarChar, teleregId)
+                .input('input_parameter', sql.Int, teleregId)
                 .query('SELECT Number FROM Telereg WHERE Id = @input_parameter ' +
                     'AND Deleted IS NULL');
 

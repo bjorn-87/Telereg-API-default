@@ -56,7 +56,6 @@ async function headerSqlInput(body, pool) {
  * @param {*} res response
  */
 const updateHeader = async function(body, res) {
-    console.log(body);
     let id = body.id,
         number = body.number,
         name = body.name,

@@ -9,8 +9,8 @@ router.get('/:id', function(req, res) {
     showConnection(req.params, res);
 });
 
-router.delete('/:id', function(req, res) {
-    deleteConnection(req.params, res);
+router.delete('/', function(req, res) {
+    deleteConnection(req.body, res);
 });
 
 module.exports = router;

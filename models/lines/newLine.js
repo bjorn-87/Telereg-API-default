@@ -39,7 +39,6 @@ const newLine = async function(body, res) {
                     .query('SELECT MAX(Position) AS MaxPos FROM Teletr ' +
                         'WHERE TeleregNumber = @number AND Deleted IS NULL');
 
-                console.log(maxPos);
                 if (maxPos.recordset[0]) {
                     position = maxPos.recordset[0].MaxPos > 0 ? maxPos.recordset[0].MaxPos : 0;
                     position++;

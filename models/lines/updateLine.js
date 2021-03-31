@@ -59,14 +59,14 @@ const updateLine = async function(body, res) {
                         'KlFrom = @klfrom, FieldTo = @fieldto, NrTo = @nrto, KlTo = @klto, ' +
                         'Comment = @comment, Updated = @updated  WHERE Id = @id');
 
-                return res.status(204).send();
+                res.status(200).send();
             }
         } catch (err) {
             res.status(500).json({
                 "errors": {
                     "status": 500,
                     "title": "INTERNAL SERVER ERROR",
-                    "detail": "Database error: " + err.message
+                    "detail": "Database error"
                 }
             });
         }
