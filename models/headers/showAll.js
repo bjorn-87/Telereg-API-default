@@ -14,7 +14,7 @@ var showAll = async function(req, res) {
 
     try {
         const pool = await db;
-        const total = await countAll();
+        const total = await countAll(res);
 
         // limit max 100
         if (limit > 100) {
@@ -49,7 +49,7 @@ var showAll = async function(req, res) {
  * Counts all posts in Telereg where Deleted is NULL
  * @returns {Int} Total amount of posts in Telereg
  */
-var countAll = async function() {
+var countAll = async function(res) {
     try {
         const pool = await db;
         const result = await pool.request()
@@ -61,7 +61,7 @@ var countAll = async function() {
         res.status(500).json({
             "errors": {
                 "status": 500,
-                "detail": err.message
+                "detail": error.message
             }
         });
     }

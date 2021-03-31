@@ -39,6 +39,6 @@ app.use(middleware.errorHandler);
 
 // Start up server
 const server = app.listen(NODE_PORT, () =>
-console.log(`API listening on ${NODE_ENV}-server port:${NODE_PORT}`));
+    console.log(`API listening on ${NODE_ENV}-server port:${NODE_PORT}`));
 
 module.exports = server;
