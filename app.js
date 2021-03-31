@@ -4,7 +4,9 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
-const port = 8383;
+
+const NODE_PORT = process.env.NODE_PORT || 8383;
+var NODE_ENV = process.env.NODE_ENV || 'development';
 
 const middleware = require("./middleware/index.js");
 const index = require('./routes');
@@ -36,6 +38,7 @@ app.use(middleware.errorHandler);
 
 
 // Start up server
-const server = app.listen(port, () => console.log(`API listening on port ${port}!`));
+const server = app.listen(NODE_PORT, () =>
+console.log(`API listening on ${NODE_ENV}-server port:${NODE_PORT}`));
 
 module.exports = server;

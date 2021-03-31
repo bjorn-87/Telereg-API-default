@@ -22,7 +22,8 @@ var search = async function(req, res) {
                         'Number LIKE @input_parameter' +
                         ' OR Name LIKE @input_parameter' +
                         ' OR Address LIKE @input_parameter' +
-                        ' OR Func LIKE @input_parameter ORDER BY Number ASC');
+                        ' OR Func LIKE @input_parameter ORDER BY Number ASC' +
+                        ' OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY');
 
             let data = {
                 "data": result.recordset
