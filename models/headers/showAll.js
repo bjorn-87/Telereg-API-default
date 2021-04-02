@@ -67,4 +67,7 @@ var countAll = async function(res) {
     }
 };
 
-module.exports = showAll;
+module.exports = {
+    showAll: showAll,
+    countAll: countAll
+};

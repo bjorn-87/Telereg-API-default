@@ -17,6 +17,7 @@ const newHeader = async function(body, res) {
         userid = body.userid,
         apptypetwo = body.apptypetwo,
         userfullname = body.userfullname,
+        contact = body.contact,
         other = body.other;
 
     if (number) {
@@ -47,12 +48,13 @@ const newHeader = async function(body, res) {
                     .input('userid', sql.VarChar, userid)
                     .input('apptypetwo', sql.VarChar, apptypetwo)
                     .input('userfullname', sql.VarChar, userfullname)
+                    .input('contact', sql.VarChar, contact)
                     .input('other', sql.VarChar, other)
                     .query('INSERT INTO Telereg ' +
                             '(Number, Name, Func, Address, Drawing, Apptype, ' +
-                            'Document, UserId, ApptypeTwo, UserFullName, Other) VALUES ' +
+                            'Document, UserId, ApptypeTwo, UserFullName, Contact, Other) VALUES ' +
                             '(@number, @name, @func, @address, @drawing, @apptype, @document, ' +
-                            '@userid, @apptypetwo, @userfullname, @other)');
+                            '@userid, @apptypetwo, @userfullname, @contact, @other)');
 
                 const idNumber = await pool.request()
                     .query('SELECT MAX(Id) AS NewId FROM Telereg');

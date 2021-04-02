@@ -22,6 +22,7 @@ async function headerSqlInput(body, pool) {
         userid = body.userid,
         apptypetwo = body.apptypetwo,
         userfullname = body.userfullname,
+        contact = body.contact,
         other = body.other,
         updated = new Date();
 
@@ -37,13 +38,14 @@ async function headerSqlInput(body, pool) {
         .input('userid', sql.VarChar, userid)
         .input('apptypetwo', sql.VarChar, apptypetwo)
         .input('userfullname', sql.VarChar, userfullname)
+        .input('contact', sql.VarChar, contact)
         .input('other', sql.VarChar, other)
         .input('updated', sql.DateTime, updated)
         .query('UPDATE Telereg SET ' +
                 'Number = @number, Name = @name, Func = @func, Address = @address, ' +
                 'Drawing = @drawing, Apptype = @apptype, ' +
                 'Document = @document, UserId = @userid, ' +
-                'ApptypeTwo = @apptypetwo, UserFullName = @userfullname, ' +
+                'ApptypeTwo = @apptypetwo, UserFullName = @userfullname, Contact = @contact, ' +
                 'Other = @other, Updated = @updated WHERE Id = @id');
 
     return;
@@ -67,6 +69,7 @@ const updateHeader = async function(body, res) {
         userid = body.userid,
         apptypetwo = body.apptypetwo,
         userfullname = body.userfullname,
+        contact = body.contact,
         other = body.other,
         updated = new Date(),
         oldTeleregNumber;
@@ -135,6 +138,7 @@ const updateHeader = async function(body, res) {
                                 .input('userid', sql.VarChar, userid)
                                 .input('apptypetwo', sql.VarChar, apptypetwo)
                                 .input('userfullname', sql.VarChar, userfullname)
+                                .input('contact', sql.VarChar, contact)
                                 .input('other', sql.VarChar, other)
                                 .input('updated', sql.DateTime, updated)
                                 .query('UPDATE Telereg SET ' +
@@ -142,7 +146,8 @@ const updateHeader = async function(body, res) {
                                         'Func = @func, Address = @address, ' +
                                         'Drawing = @drawing, Apptype = @apptype, ' +
                                         'Document = @document, UserId = @userid, ' +
-                                        'ApptypeTwo = @apptypetwo, UserFullName = @userfullname, ' +
+                                        'ApptypeTwo = @apptypetwo, ' +
+                                        'UserFullName = @userfullname, Contact = @contact, ' +
                                         'Other = @other, Updated = @updated WHERE Id = @id');
 
                             //Commit the transaction

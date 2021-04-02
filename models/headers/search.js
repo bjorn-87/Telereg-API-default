@@ -2,6 +2,7 @@
 
 const db = require("../../db/db.js");
 const sql = require("mssql");
+const header = require('./showAll');
 
 /**
  *
@@ -15,9 +16,10 @@ var search = async function(req, res) {
         try {
             let search = qry.search;
             const pool = await db;
+            const total = await header.countAll(res);
 
             const result = await pool.request()
-                .input('input_parameter', sql.VarChar, `%${search}%`)
+                .input('input_parameter', sql.VarChar, `${search}%`)
                 .query('SELECT * FROM Telereg WHERE Deleted IS NULL AND ' +
                         'Number LIKE @input_parameter' +
                         ' OR Name LIKE @input_parameter' +
@@ -26,7 +28,8 @@ var search = async function(req, res) {
                         ' OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY');
 
             let data = {
-                "data": result.recordset
+                "data": result.recordset,
+                "total": total
             };
 
             res.status(200).json(data);
