@@ -1,4 +1,12 @@
 ```
+Routes:
+GET /connections
+```
+
+
+
+
+```
 No token error:
 {
     "errors": {
@@ -63,7 +71,11 @@ GET /connections/:id (Show connection (header and lines))
     }
 }
 
-GET /headers/search?search=test (search header)
+`GET /headers/search?search=test`
+(search header)
+
+Result:
+```
 {
     "data": [
         {
@@ -102,8 +114,12 @@ GET /headers/search?search=test (search header)
         }
     ]
 }
+```
 
-GET /headers  (show all headers)
+`GET /headers  (show all headers)`
+
+Result:
+```
 {
     "data": [
         {

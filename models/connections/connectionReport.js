@@ -9,7 +9,6 @@ const sql = require("mssql");
  * @param {*} res
  */
 var connectionReport = async function(query, res) {
-    console.log(query);
     var rack = query.rack,
         field = query.field;
 
@@ -36,8 +35,13 @@ var connectionReport = async function(query, res) {
                 "data": recordSet
             });
         } catch (err) {
-            res.status(500);
-            res.send(err.message);
+            res.status(500).json({
+                "errors": {
+                    "status": 500,
+                    "title": "INTERNAL SERVER ERROR",
+                    "detail": err.message
+                }
+            });
         }
     }
 };
