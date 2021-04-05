@@ -4,7 +4,7 @@ const db = require("../../db/db.js");
 const sql = require("mssql");
 
 /**
- *
+ * Connection report that shows occupied connections in Rack
  * @param {*} qry
  * @param {*} res
  */

@@ -14,6 +14,10 @@ const connections = require('./routes/connections.js');
 const headers = require('./routes/headers.js');
 const lines = require('./routes/lines.js');
 
+// Attackers can use x-powered-by header (which is enabled by default)
+// to detect apps running Express and then launch specifically-targeted attacks.
+app.disable('x-powered-by');
+
 // log incoming to console
 app.use(middleware.logIncoming);
 
