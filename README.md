@@ -1,6 +1,30 @@
 Required in body for all routes:
-authorization: "Azure autenthication token"
+`authorization: "Azure autenthication token"`
 
+No token error:
+```
+{
+    "errors": {
+        "status": 401,
+        "title": "Authentication failed",
+        "detail": "Error Decoding JWT Token"
+    }
+}
+```
+Expired token error:
+```
+{
+    "errors": {
+        "status": 401,
+        "title": "Authentication failed",
+        "detail": {
+            "name": "TokenExpiredError",
+            "message": "jwt expired",
+            "expiredAt": "2021-03-26T09:54:29.000Z"
+        }
+    }
+}
+```
 
 `GET /headers/limit=<limit>&offset=<offset>`
 Limit defaults to 50 (max 100)
@@ -205,31 +229,3 @@ Return status 200 OK
 `DELETE /api/v1/lines`
 Required parameter in body "id"
 Return status 204 NO CONTENT
-
-
-### Errors:
-
-No token error:
-```
-{
-    "errors": {
-        "status": 401,
-        "title": "Authentication failed",
-        "detail": "Error Decoding JWT Token"
-    }
-}
-```
-Expired token error:
-```
-{
-    "errors": {
-        "status": 401,
-        "title": "Authentication failed",
-        "detail": {
-            "name": "TokenExpiredError",
-            "message": "jwt expired",
-            "expiredAt": "2021-03-26T09:54:29.000Z"
-        }
-    }
-}
-```

@@ -13,6 +13,8 @@ const index = require('./routes');
 const connections = require('./routes/connections.js');
 const headers = require('./routes/headers.js');
 const lines = require('./routes/lines.js');
+const helmet = require('helmet');
+
 
 // Attackers can use x-powered-by header (which is enabled by default)
 // to detect apps running Express and then launch specifically-targeted attacks.
@@ -22,6 +24,7 @@ app.disable('x-powered-by');
 app.use(middleware.logIncoming);
 
 // Middleware CORS
+app.use(helmet());
 app.use(cors());
 
 app.use(express.json()); // for parsing application/json

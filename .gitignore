@@ -2,4 +2,5 @@
 
 # dependencies
 /node_modules
-/config
+/config/dbConfig.js
+/config/config.json

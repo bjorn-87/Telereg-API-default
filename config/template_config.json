@@ -1,0 +1,5 @@
+{
+  "JWK_URI": "This is a config template for the azure-jwt-verify",
+  "ISS": "Enter correct values and rename the file to config.json",
+  "AUD": "api://"
+}
