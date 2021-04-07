@@ -1,7 +1,7 @@
-Required in body for all routes:
+Required in body for all routes:  
 `authorization: "Azure autenthication token"`
 
-No token error:
+No token error:  
 ```
 {
     "errors": {
@@ -11,7 +11,7 @@ No token error:
     }
 }
 ```
-Expired token error:
+Expired token error:  
 ```
 {
     "errors": {
@@ -26,11 +26,11 @@ Expired token error:
 }
 ```
 
-`GET /headers/limit=<limit>&offset=<offset>`
-Limit defaults to 50 (max 100)
-Offset defaults to 0
+`GET /headers/limit=<limit>&offset=<offset>`  
+Limit defaults to 50 (max 100)  
+Offset defaults to 0  
 
-Returns rows depending on limit and offset plus total number of rows in table Telereg.
+Returns rows depending on limit and offset plus total number of rows in table Telereg.  
 ```
 {
     "data": [
@@ -63,9 +63,9 @@ Returns rows depending on limit and offset plus total number of rows in table Te
 ```
 
 
-`GET /headers/search?search=<search>`
-(search header)
-Required parameter "search" in querystring
+`GET /headers/search?search=<search>`  
+(search header)  
+Required parameter "search" in querystring  
 
 Result:
 ```
@@ -111,9 +111,10 @@ Result:
 }
 ```
 
-`POST /api/v1/headers`
-Required parameter number
-returns
+`POST /api/v1/headers`  
+Required parameter 'number' in body  
+
+Result:  
 ```
 {
     "data": {
@@ -125,13 +126,15 @@ returns
 }
 ```
 
-`PUT /api/v1/headers`
-Required parameter number & id
-Returns status 204 NO CONTENT
+`PUT /api/v1/headers`  
+Required parameter number & id in body  
+Returns status 204 NO CONTENT  
 
-`GET /connections/:id `
-(Show connection (header and lines))
-Required parameter id (Id of Telereg row)
+`GET /connections/:id `  
+Show connection (head and all lines connected)  
+Required parameter id (Id of Telereg row)  
+
+Result:  
 ```
 {
     "data": {
@@ -176,8 +179,10 @@ Required parameter id (Id of Telereg row)
 }
 ```
 
-`GET /api/v1/connections/report?rack=sm&field=01`
-return
+`GET /api/v1/connections/report?rack=sm&field=01`  
+Requires query parameter 'rack' and 'field'  
+
+return:
 ```
 {
     "data": [
@@ -205,14 +210,15 @@ return
 }
 ```
 
-`DELETE /api/v1/connections`
-Required parameter in body "id"
-Return status 204 NO CONTENT
+`DELETE /api/v1/connections`  
+Required parameter in body "id"  
+Return status 204 NO CONTENT  
 
 
-`POST /api/v1/lines`
-Required parameter in body "teleregid"
-Returns
+`POST /api/v1/lines`  
+Required parameter in body 'teleregid'  
+
+Result:  
 ```
 {
     "data": {
@@ -222,10 +228,11 @@ Returns
     }
 }
 ```
-`PUT /api/v1/lines`
-Requied parameter in body "id"
-Return status 200 OK
 
-`DELETE /api/v1/lines`
-Required parameter in body "id"
+`PUT /api/v1/lines`  
+Requied parameter 'id' in body  
+Return status 200 OK  
+
+`DELETE /api/v1/lines`  
+Required parameter 'id' in body  
 Return status 204 NO CONTENT
