@@ -5,7 +5,7 @@ const cors = require('cors');
 
 const app = express();
 
-const NODE_PORT = process.env.NODE_PORT || 8383;
+const NODE_PORT = process.env.NODE_PORT || 8080;
 var NODE_ENV = process.env.NODE_ENV || 'development';
 
 const middleware = require("./middleware/index.js");
