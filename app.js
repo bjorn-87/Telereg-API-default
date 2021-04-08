@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+const morgan = require('morgan');
 const cors = require('cors');
 
 const app = express();
@@ -21,7 +22,11 @@ const helmet = require('helmet');
 app.disable('x-powered-by');
 
 // log incoming to console
-app.use(middleware.logIncoming);
+// don't show the log when it is test
+if (process.env.NODE_ENV !== 'test') {
+    // use morgan to log at command line
+    app.use(morgan('combined')); // 'combined' outputs the Apache style LOGs
+}
 
 // Middleware CORS
 app.use(helmet());

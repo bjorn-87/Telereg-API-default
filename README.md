@@ -1,4 +1,19 @@
-Required in body for all routes:  
+# Install Teleregister-API
+1. Clone this repo
+2. Navigate to root-folder for repo then run `npm install`
+3. Edit file `config/config.json` and file `config/dbConfig.js`
+4. Run command `npm start` to start in development mode
+
+## External dependencies
+* [azure-jwt-verify](https://www.npmjs.com/package/azure-jwt-verify)
+* [cors](https://www.npmjs.com/package/cors)
+* [express](https://www.npmjs.com/package/express)
+* [helmet](https://www.npmjs.com/package/helmet)
+* [mssql](https://www.npmjs.com/package/mssql)
+* [morgan](https://www.npmjs.com/package/morgan)
+
+
+Required in header for all routes:  
 `authorization: "Azure autenthication token"`
 
 No token error:  
