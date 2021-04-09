@@ -10,7 +10,9 @@ const sql = require("mssql");
  */
 var connectionReport = async function(query, res) {
     var rack = query.rack,
-        field = query.field;
+        field = query.field,
+        nrfrom = query.nrfrom ? query.nrfrom : '01',
+        nrto = query.nrto ? query.nrto : '9999';
 
     if (!rack || !field) {
         res.status(400).json({
@@ -26,8 +28,10 @@ var connectionReport = async function(query, res) {
             let result = await pool.request()
                 .input('rack', sql.VarChar, rack)
                 .input('field', sql.VarChar, field)
+                .input('nrto', sql.VarChar, nrto)
+                .input('nrfrom', sql.VarChar, nrfrom)
                 .query('SELECT * FROM Connections WHERE Rack = @rack AND Field = @field ' +
-                    'ORDER BY Nr, Kl');
+                    'AND Nr >= @nrfrom AND Nr <= @nrto ORDER BY Nr, Kl');
 
             let recordSet = result.recordset;
 
