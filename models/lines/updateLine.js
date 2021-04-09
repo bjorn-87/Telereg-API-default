@@ -22,6 +22,8 @@ const updateLine = async function(body, res) {
         nrto = body.nrto,
         klto = body.klto,
         comment = body.comment,
+        userId = body.userid,
+        userFullName = body.userfullname,
         updated = new Date();
 
     if (id) {
@@ -30,7 +32,7 @@ const updateLine = async function(body, res) {
 
             const searchId = await pool.request()
                 .input('id', sql.Int, id)
-                .query('SELECT Id FROM Teletr WHERE Id = @id AND Deleted IS NULL');
+                .query('SELECT Id, TeleregNumber FROM Teletr WHERE Id = @id AND Deleted IS NULL');
 
             if (searchId.recordset.length === 0) {
                 res.status(404).json({
@@ -59,6 +61,19 @@ const updateLine = async function(body, res) {
                         'KlFrom = @klfrom, FieldTo = @fieldto, NrTo = @nrto, KlTo = @klto, ' +
                         'Comment = @comment, Updated = @updated  WHERE Id = @id');
 
+                let teleregNumber = searchId.recordset[0].TeleregNumber;
+
+                if (teleregNumber) {
+                    await pool.request()
+                        .input('updated', sql.DateTime, updated)
+                        .input('userid', sql.VarChar, userId)
+                        .input('userfullname', sql.VarChar, userFullName)
+                        .input('number', sql.VarChar, teleregNumber)
+                        .query('UPDATE Telereg SET Updated = @updated, ' +
+                            'UserId = @userid, UserFullName = @userfullname WHERE ' +
+                            'Number = @number AND Deleted IS NULL');
+                }
+
                 res.status(200).send();
             }
         } catch (err) {
@@ -66,7 +81,7 @@ const updateLine = async function(body, res) {
                 "errors": {
                     "status": 500,
                     "title": "INTERNAL SERVER ERROR",
-                    "detail": "Database error"
+                    "detail": "Database error" + err.message
                 }
             });
         }
