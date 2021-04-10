@@ -5,27 +5,46 @@ const sql = require("mssql");
 const header = require('./showAll');
 
 /**
- *
+ * Function to search for headers
  * @param {*} req
  * @param {*} res
  */
 var search = async function(req, res) {
-    let qry = req.query;
+    let search = req.query.search,
+        type = req.query.type;
 
-    if (qry.search) {
+    if (search) {
         try {
-            let search = qry.search;
             const pool = await db;
             const total = await header.countAll(res);
 
-            const result = await pool.request()
-                .input('input_parameter', sql.VarChar, `${search}%`)
-                .query('SELECT * FROM Telereg WHERE Deleted IS NULL AND ' +
-                        'Number LIKE @input_parameter' +
-                        ' OR Name LIKE @input_parameter' +
-                        ' OR Address LIKE @input_parameter' +
-                        ' OR Func LIKE @input_parameter ORDER BY Number ASC' +
-                        ' OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY');
+            var result;
+
+            if (type === "function") {
+                result = await pool.request()
+                    .input('input_parameter', sql.VarChar, `${search}%`)
+                    .query('SELECT * FROM Telereg WHERE Deleted IS NULL AND ' +
+                        'Func LIKE @input_parameter ORDER BY Number ASC ' +
+                        'OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY');
+            } else if (type === "address") {
+                result = await pool.request()
+                    .input('input_parameter', sql.VarChar, `${search}%`)
+                    .query('SELECT * FROM Telereg WHERE Deleted IS NULL AND ' +
+                        'Address LIKE @input_parameter ORDER BY Number ASC ' +
+                        'OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY');
+            } else if (type === "name") {
+                result = await pool.request()
+                    .input('input_parameter', sql.VarChar, `${search}%`)
+                    .query('SELECT * FROM Telereg WHERE Deleted IS NULL AND ' +
+                        'Name LIKE @input_parameter ORDER BY Number ASC ' +
+                        'OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY');
+            } else {
+                result = await pool.request()
+                    .input('input_parameter', sql.VarChar, `${search}%`)
+                    .query('SELECT * FROM Telereg WHERE Deleted IS NULL AND ' +
+                        'Number LIKE @input_parameter ORDER BY Number ASC ' +
+                        'OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY');
+            }
 
             let data = {
                 "data": result.recordset,

@@ -12,11 +12,12 @@
 * [mssql](https://www.npmjs.com/package/mssql)
 * [morgan](https://www.npmjs.com/package/morgan)
 
+********************************
+#### Required parameter in header for all routes:  
+`authorization: (Azure autenthication token)`
 
-Required in header for all routes:  
-`authorization: "Azure autenthication token"`
-
-No token error:  
+#### Errors
+`No token error:`
 ```
 {
     "errors": {
@@ -26,7 +27,7 @@ No token error:
     }
 }
 ```
-Expired token error:  
+`Expired token error:`
 ```
 {
     "errors": {
@@ -40,12 +41,23 @@ Expired token error:
     }
 }
 ```
+************************************
+## Headers
 
+#### Get headers with pagination
 `GET /headers/limit=<limit>&offset=<offset>`  
+
+```
+Optional parameters in querystring
+
+limit
+offset
+
 Limit defaults to 50 (max 100)  
 Offset defaults to 0  
+```
 
-Returns rows depending on limit and offset plus total number of rows in table Telereg.  
+Returns:
 ```
 {
     "data": [
@@ -76,13 +88,32 @@ Returns rows depending on limit and offset plus total number of rows in table Te
     "total": 4341
 }
 ```
+************************************
+#### Search headers
+`GET /headers/search?search=<search>&type=<type>`  
+```
+Required parameter in querystring
+
+search
+```
+```
+Optional parameter 
+
+type  
+```
+```
+type can be set to:
+
+number
+address
+name
+function
+
+Defaults to number
+```
 
 
-`GET /headers/search?search=<search>`  
-(search header)  
-Required parameter "search" in querystring  
-
-Result:
+Returns:
 ```
 {
     "data": [
@@ -125,11 +156,30 @@ Result:
     ]
 }
 ```
+*************************************
+#### Create a new header
+`POST /api/v1/headers`
+```
+Required parameter in body
 
-`POST /api/v1/headers`  
-Required parameter 'number' in body  
+number
+```
+Optional parameters:
+```
+name
+func
+address
+drawing
+apptype
+document
+userid
+apptypetwo
+userfullname
+contact
+other
+```
 
-Result:  
+Returns:  
 ```
 {
     "data": {
@@ -140,15 +190,41 @@ Result:
     }
 }
 ```
+*****************************
+#### Update header
+`PUT /api/v1/headers`
+```
+Required parameters in body 
 
-`PUT /api/v1/headers`  
-Required parameter number & id in body  
+number
+id
+```
+Optional parameters:
+```
+number
+name
+func
+address
+drawing
+apptype
+document
+userid
+apptypetwo
+userfullname
+contact
+other
+```
 Returns status 204 NO CONTENT  
+*************************************
+## Connections
 
-`GET /connections/:id `  
-Show connection (head and all lines connected)  
-Required parameter id (Id of Telereg row)  
+#### Show connection (header + connected lines)  
+`GET /connections/:id`
+```
+Required parameter
 
+id
+```
 Result:  
 ```
 {
@@ -193,9 +269,22 @@ Result:
     }
 }
 ```
+********************************
+`GET /api/v1/connections/report?rack=sm&field=01&nrfrom=01&nrto=99`
+```
+Required query parameter:
 
-`GET /api/v1/connections/report?rack=sm&field=01`  
-Requires query parameter 'rack' and 'field'  
+rack
+field
+```
+Optional query parameters:
+```
+nrfrom
+nrto
+
+nrfrom defaults to '01'  
+nrto defaults to '9999'  
+```
 
 return:
 ```
@@ -224,14 +313,26 @@ return:
     ]
 }
 ```
-
+*********************************
+#### Deleting a connection (header + lines)
 `DELETE /api/v1/connections`  
-Required parameter in body "id"  
-Return status 204 NO CONTENT  
+```
+Required parameter in body 
 
+id
+```
+Return status `204 NO CONTENT`
+*********************************
+## Lines
 
-`POST /api/v1/lines`  
-Required parameter in body 'teleregid'  
+#### Creating a new line
+
+`POST /api/v1/lines`
+```
+Required parameter in body 
+
+teleregid
+```
 
 Result:  
 ```
@@ -243,11 +344,36 @@ Result:
     }
 }
 ```
+*******************************
+#### Updating a line
+`PUT /api/v1/lines`
+```
+Required parameter in body
 
-`PUT /api/v1/lines`  
-Requied parameter 'id' in body  
-Return status 200 OK  
+id
+```
+Optional parameters:
+```
+position
+note
+rack
+fieldfrom
+nrfrom
+klfrom
+fieldto
+nrto
+klto
+comment
+userid
+userfullname
+```
+Return status `200 OK`
+********************************
+#### Deleting a line
+`DELETE /api/v1/lines`
+```
+Required parameter in body:
 
-`DELETE /api/v1/lines`  
-Required parameter 'id' in body  
-Return status 204 NO CONTENT
+id
+```
+Return status `204 NO CONTENT`
