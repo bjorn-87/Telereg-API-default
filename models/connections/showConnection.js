@@ -32,7 +32,7 @@ var showConnection = async function(params, res) {
         };
 
     if (!teleregId) {
-        res.status(404).json({
+        return res.status(404).json({
             errors: {
                 status: 404,
                 title: "Not found",
@@ -65,12 +65,17 @@ var showConnection = async function(params, res) {
                 data.line = recordSet2;
             }
 
-            res.status(200).json({
+            return res.status(200).json({
                 data: data
             });
         } catch (err) {
-            res.status(500);
-            res.send(err.message);
+            return res.status(500).json({
+                "errors": {
+                    "status": 500,
+                    "title": "INTERNAL SERVER ERROR",
+                    "detail": err.message
+                }
+            });
         }
     }
 };

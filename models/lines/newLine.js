@@ -24,7 +24,7 @@ const newLine = async function(body, res) {
                 .query('SELECT Number FROM Telereg WHERE Id = @id AND Deleted IS NULL');
 
             if (searchNumber.recordset.length === 0) {
-                res.status(404).json({
+                return res.status(404).json({
                     "errors": {
                         "status": 404,
                         "title": "Not Found",
@@ -61,7 +61,7 @@ const newLine = async function(body, res) {
                 });
             }
         } catch (err) {
-            res.status(500).json({
+            return res.status(500).json({
                 "errors": {
                     "status": 500,
                     "title": "INTERNAL SERVER ERROR",
@@ -70,7 +70,7 @@ const newLine = async function(body, res) {
             });
         }
     } else {
-        res.status(400).json({
+        return res.status(400).json({
             "errors": {
                 "status": 400,
                 "title": "BAD REQUEST",

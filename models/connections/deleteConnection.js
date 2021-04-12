@@ -14,7 +14,7 @@ var deleteConnection = async function(body, res) {
         teleregNumber;
 
     if (!teleregId) {
-        res.status(400).json({
+        return res.status(400).json({
             "errors": {
                 "status": 400,
                 "title": "Bad request",
@@ -86,8 +86,13 @@ var deleteConnection = async function(body, res) {
                 });
             }
         } catch (err) {
-            res.status(500);
-            res.send(err.message);
+            return res.status(500).json({
+                "errors": {
+                    "status": 500,
+                    "title": "INTERNAL SERVER ERROR",
+                    "detail": err.message
+                }
+            });
         }
     }
 };

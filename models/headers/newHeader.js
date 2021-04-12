@@ -29,7 +29,7 @@ const newHeader = async function(body, res) {
                 .query('SELECT Number FROM Telereg WHERE Number = @number AND Deleted IS NULL');
 
             if (searchNumber.recordset.length > 0) {
-                res.status(409).json({
+                return res.status(409).json({
                     "errors": {
                         "status": 409,
                         "title": "CONFLICT",
@@ -59,7 +59,7 @@ const newHeader = async function(body, res) {
                 const idNumber = await pool.request()
                     .query('SELECT MAX(Id) AS NewId FROM Telereg');
 
-                res.status(201).json({
+                return res.status(201).json({
                     "data": {
                         "status": 201,
                         "title": "CREATED",
@@ -69,7 +69,7 @@ const newHeader = async function(body, res) {
                 });
             }
         } catch (err) {
-            res.status(500).json({
+            return res.status(500).json({
                 "errors": {
                     "status": 500,
                     "title": "INTERNAL SERVER ERROR",
@@ -78,7 +78,7 @@ const newHeader = async function(body, res) {
             });
         }
     } else {
-        res.status(400).json({
+        return res.status(400).json({
             "errors": {
                 "status": 400,
                 "title": "BAD REQUEST",

@@ -23,7 +23,7 @@ const deleteLine = async function(body, res) {
                 .query('SELECT Id FROM Teletr WHERE Id = @id AND Deleted IS NULL');
 
             if (searchId.recordset.length === 0) {
-                res.status(404).json({
+                return res.status(404).json({
                     "errors": {
                         "status": 404,
                         "title": "Not Found",
@@ -39,7 +39,7 @@ const deleteLine = async function(body, res) {
                 return res.status(204).send();
             }
         } catch (err) {
-            res.status(500).json({
+            return res.status(500).json({
                 "errors": {
                     "status": 500,
                     "title": "INTERNAL SERVER ERROR",
@@ -48,7 +48,7 @@ const deleteLine = async function(body, res) {
             });
         }
     } else {
-        res.status(400).json({
+        return res.status(400).json({
             "errors": {
                 "status": 400,
                 "title": "BAD REQUEST",

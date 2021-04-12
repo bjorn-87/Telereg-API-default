@@ -157,7 +157,7 @@ const updateHeader = async function(body, res) {
                             return res.status(204).send();
                         } catch (err) {
                             await transaction.rollback();
-                            res.status(500).json({
+                            return res.status(500).json({
                                 "errors": {
                                     "status": 500,
                                     "title": "INTERNAL SERVER ERROR",

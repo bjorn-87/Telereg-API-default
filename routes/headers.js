@@ -7,12 +7,12 @@ const search = require('../models/headers/search.js');
 const newHeader = require('../models/headers/newHeader.js');
 const updateHeader = require('../models/headers/updateHeader.js');
 
-router.get('/', function(req, res) {
-    header.showAll(req, res);
-});
-
 router.get('/search/', function(req, res) {
     search(req, res);
+});
+
+router.get('/', function(req, res) {
+    header.showAll(req, res);
 });
 
 router.put('/', function(req, res) {

@@ -15,7 +15,7 @@ var connectionReport = async function(query, res) {
         nrto = query.nrto ? query.nrto : '9999';
 
     if (!rack || !field) {
-        res.status(400).json({
+        return res.status(400).json({
             errors: {
                 status: 400,
                 title: "BAD REQUEST",
@@ -35,11 +35,11 @@ var connectionReport = async function(query, res) {
 
             let recordSet = result.recordset;
 
-            res.status(200).json({
+            return res.status(200).json({
                 "data": recordSet
             });
         } catch (err) {
-            res.status(500).json({
+            return res.status(500).json({
                 "errors": {
                     "status": 500,
                     "title": "INTERNAL SERVER ERROR",
