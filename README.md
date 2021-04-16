@@ -89,8 +89,8 @@ Returns:
 }
 ```
 ************************************
-#### Search headers
-`GET /headers/search?search=<search>&type=<type>`  
+#### Search headers with pagination
+`GET /headers/search?search=<search>&type=<type>&limit=<limit>&offset=<offset>`  
 ```
 Required parameter in querystring
 
@@ -100,6 +100,8 @@ search
 Optional parameter 
 
 type  
+limit  
+offset  
 ```
 ```
 type can be set to:
@@ -110,6 +112,9 @@ name
 function
 
 Defaults to number
+
+limit defaults to 50
+offset defaults to 0
 ```
 
 
