@@ -1,5 +1,7 @@
 'use strict';
 
+require('dotenv').config();
+
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
@@ -47,7 +49,6 @@ app.use('/api/v1/connections', connections);
 app.use(middleware.fourOFourHandler);
 // Felhanterare
 app.use(middleware.errorHandler);
-
 
 // Start up server
 const server = app.listen(NODE_PORT, () =>

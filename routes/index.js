@@ -6,8 +6,8 @@ const router = express.Router();
 router.get('/', function(req, res) {
     const data = {
         routes: {
-            "GET /": "Shows this message",
-            "GET /headers":  {
+            "GET/": "Shows this message",
+            "GET/headers":  {
                 "/": "Shows all headers",
                 "/search?search=<input>": "Search Headers"
             },

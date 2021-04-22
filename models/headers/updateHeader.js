@@ -4,7 +4,7 @@ const db = require('../../db/db.js');
 const sql = require("mssql");
 
 /**
- * Pool request
+ * Update Header
  *
  * @param {*} body request body
  * @param {*} pool connection pool

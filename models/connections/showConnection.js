@@ -27,16 +27,16 @@ function nullToString(recordset) {
 var showConnection = async function(params, res) {
     var teleregId = params.id,
         data = {
-            "head": [],
+            "head": {},
             "line": []
         };
 
-    if (!teleregId) {
-        return res.status(404).json({
+    if (!teleregId || isNaN(teleregId)) {
+        return res.status(400).json({
             errors: {
-                status: 404,
-                title: "Not found",
-                detail: "Page not found"
+                status: 400,
+                title: "BAD REQUEST",
+                detail: "Param id missing in url or param id is not a number"
             }
         });
     } else {

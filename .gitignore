@@ -2,5 +2,6 @@
 
 # dependencies
 /node_modules
-/config/dbConfig.js
-/config/config.json
+/coverage
+.nyc_output
+.env

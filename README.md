@@ -1,8 +1,31 @@
 # Install Teleregister-API
 1. Clone this repo
 2. Navigate to root-folder for repo then run `npm install`
-3. Edit file `config/config.json` and file `config/dbConfig.js`
-4. Run command `npm start` to start in development mode
+3. Create a `.env` file in the root directory with following:
+
+For databaseconnection:
+```
+DATABASE=database
+DB_USER=username
+DB_PASS=Password
+DB_SERVER=server
+```
+For Azure AD configuration:
+```
+JWK_URI=https://
+ISS=https://
+AUD=api://
+```
+General settings
+```
+NODE_ENV=development
+NODE_PORT=8080
+```
+For Testing purposes:
+```
+JWT_SECRET=secret (64 characters secure token for testing purposes)
+```
+4. Run command `npm start` to start in development mode or `npm run production` for production mode
 
 ## External dependencies
 * [azure-jwt-verify](https://www.npmjs.com/package/azure-jwt-verify)
@@ -11,6 +34,8 @@
 * [helmet](https://www.npmjs.com/package/helmet)
 * [mssql](https://www.npmjs.com/package/mssql)
 * [morgan](https://www.npmjs.com/package/morgan)
+* [dotenv](https://www.npmjs.com/package/dotenv)
+* [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
 
 ********************************
 #### Required parameter in header for all routes:  

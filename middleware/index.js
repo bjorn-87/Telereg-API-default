@@ -2,16 +2,22 @@
 
 "use strict";
 
-const config = require('../config/config.json');
+const jwt = require('jsonwebtoken');
 const azureJWT = require('azure-jwt-verify');
 
-/**
- * Logs incomming to console
- */
-var logIncoming = function(req, res, next) {
-    console.info(`Got request on ${req.path} (${req.method}).`);
-    next();
-};
+var config;
+
+try {
+    config = require('../config/config.js');
+} catch (error) {
+    console.error(error);
+}
+
+// secret for jwt_token during tests
+const secret = config.jwtSecret;
+
+// config for azure-jwt-verify
+const azureConfig = config.azureConfig; 
 
 /**
  * Add routes for 404 and error handling
@@ -49,24 +55,50 @@ var errorHandler = (err, req, res, next) => {
 var verifyToken = function (req, res, next) {
     let jwtToken = req.headers['authorization'];
 
-    azureJWT.verify(jwtToken, config).then(function(decoded) {
-        // success callback
-        next();
-    }, function(error) {
-    // error callback
-        return res.status(401).json({
-            errors: {
-                status: 401,
-                title: "Authentication failed",
-                detail: JSON.parse(error).message
-            }
+    if (process.env.NODE_ENV !== 'test') {
+        azureJWT.verify(jwtToken, azureConfig).then(function(decoded) {
+            // success callback
+            next();
+        }, function(error) {
+        // error callback
+            return res.status(401).json({
+                errors: {
+                    status: 401,
+                    title: "Authentication failed",
+                    detail: error.message
+                }
+            });
         });
-    });
+    } else {
+        jwt.verify(jwtToken, secret, function(err) {
+            if (err) {
+                return res.status(401).json({
+                    errors: {
+                        status: 401,
+                        title: "Authentication failed",
+                        detail: err.message
+                    }
+                });
+            }
+
+            next();
+        });
+    }
+};
+
+/**
+ * create a token.
+ */
+var createToken = function(email) {
+    let payload = {email: email};
+    let jwtToken = jwt.sign(payload, secret, { expiresIn: '12h' });
+
+    return jwtToken;
 };
 
 module.exports = {
-    logIncoming: logIncoming,
     fourOFourHandler: fourOFourHandler,
     errorHandler: errorHandler,
-    verifyToken: verifyToken
+    verifyToken: verifyToken,
+    createToken: createToken
 };

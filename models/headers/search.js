@@ -66,16 +66,19 @@ var search = async function(req, res) {
             return res.status(500).json({
                 "errors": {
                     "status": 500,
-                    "Title": "INTERNAL SERVER ERROR",
+                    "title": "INTERNAL SERVER ERROR",
                     "detail": err.message
                 }
             });
         }
     } else {
-        return res.status(404).json([{
-            status: "404 Page not found",
-            message: "The parameter 'search' is missing or has no value in the query"
-        }]);
+        return res.status(404).json({
+            errors: {
+                "status": 404,
+                "title": "404 Page not found",
+                "detail": "The parameter 'search' is missing or has no value in the query"
+            }
+        });
     }
 };
 
