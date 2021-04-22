@@ -17,7 +17,7 @@ try {
 const secret = config.jwtSecret;
 
 // config for azure-jwt-verify
-const azureConfig = config.azureConfig; 
+const azureConfig = config.azureConfig;
 
 /**
  * Add routes for 404 and error handling

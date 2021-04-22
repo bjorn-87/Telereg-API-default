@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 /**
  * Config file for azure-ad-verify and jsonwebtoken(Testing purposes only)
