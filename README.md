@@ -24,11 +24,14 @@ NODE_PORT=8080
 For Testing purposes:
 ```
 JWT_SECRET=secret (64 characters secure token for testing purposes)
+DEV_DATABASE=database
+DEV_DB_USER=username
+DEV_DB_PASS=Password
+DEV_DB_SERVER=server
 ```
 4. Run command `npm start` to start in development mode or `npm run production` for production mode
 
 ## External dependencies
-* [azure-jwt-verify](https://www.npmjs.com/package/azure-jwt-verify)
 * [cors](https://www.npmjs.com/package/cors)
 * [express](https://www.npmjs.com/package/express)
 * [helmet](https://www.npmjs.com/package/helmet)

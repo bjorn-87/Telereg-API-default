@@ -7,6 +7,9 @@ const server = require('../../app.js');
 const middleware = require('../../middleware/index.js');
 
 const testUrl = "/api/v1/connections/report";
+// var longtext = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
+//     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
+//     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
 chai.should();
 
@@ -87,4 +90,18 @@ describe('Test GET/connection/report', () => {
                 });
         });
     });
+    // describe('GET /connections/ (too long input)', () => {
+    //     it('Status 500', (done) => {
+    //         chai.request(server)
+    //             .get(testUrl + `?rack=${longtext}&field=test&nrfrom=01&nrto=9999`)
+    //             .set("authorization", token)
+    //             .end((err, res) => {
+    //                 res.should.have.status(500);
+    //                 res.body.should.be.an("object");
+    //                 res.body.errors.title.should.be.equal("INTERNAL SERVER ERROR");
+
+    //                 done();
+    //             });
+    //     });
+    // });
 });

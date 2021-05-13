@@ -1,5 +1,12 @@
 var sql = require("mssql");
-var dbConfig = require('../config/dbConfig.js');
+var dbConfig;
+
+if (process.env.NODE_ENV === "production") {
+    dbConfig = require('../config/dbConfig.js');
+} else {
+    dbConfig = require('../config/testDbConfig.js');
+    console.log("DevConfig");
+}
 
 const dbConnect = new sql.ConnectionPool(dbConfig)
     .connect()

@@ -35,8 +35,8 @@ describe('Test index page', () => {
                 .set("authorization", token)
                 .end((err, res) => {
                     res.should.have.status(200);
-                    res.body.should.be.an("object");
-                    res.body.routes["GET/"].should.be.an("string");
+                    res.body.routes.should.be.an("array");
+                    res.body.routes[0]["GET /"].should.be.an("string");
 
                     done();
                 });

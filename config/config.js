@@ -7,9 +7,9 @@
 const config = {
     jwtSecret: process.env.JWT_SECRET,
     azureConfig: {
-        "JWK_URI": process.env.JWK_URI,
-        "ISS": process.env.ISS,
-        "AUD": process.env.AUD
+        "jwksUri": process.env.JWK_URI,
+        "issuer": process.env.ISS,
+        "audience": process.env.AUD
     },
 };
 

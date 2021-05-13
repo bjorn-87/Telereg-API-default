@@ -9,7 +9,8 @@ router.get('/', function(req, res) {
             {"GET /": "Shows this message"},
             {"Headers": {
                 "GET /headers?limit=<number>&offset=<number>": "Shows all headers",
-                "GET /headers/search?search=<string>&limit=<number>&offset=<number>": "Search Headers",
+                "GET /headers/search?search=<string>&limit=<number>&offset=<number>":
+                    "Search Headers",
                 "PUT /headers": {
                     "Updates header with parameters in body": {
                         "id": "Required",

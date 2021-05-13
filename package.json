@@ -4,22 +4,22 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "pretest": "bash sql/reset_test_database.bash",
     "test": "nyc --reporter=html --reporter=text --reporter=clover mocha 'tests/**/*.js' --timeout 10000",
     "posttest": "npm run eslint",
     "start": "nodemon app.js",
-    "eslint": "eslint .",
-    "production": "SET NODE_ENV='production' && node app.js"
+    "eslint": "eslint ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "azure-jwt-verify": "git+https://github.com/99x/azure-jwt-verify.git",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "helmet": "^4.4.1",
     "jsonwebtoken": "^8.5.1",
+    "jwks-rsa": "^2.0.3",
     "morgan": "^1.10.0",
     "mssql": "^6.3.1"
   },

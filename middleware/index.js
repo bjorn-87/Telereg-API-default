@@ -3,7 +3,7 @@
 "use strict";
 
 const jwt = require('jsonwebtoken');
-const azureJWT = require('azure-jwt-verify');
+const validateJwt = require('./validateJwt.js');
 
 var config;
 
@@ -55,20 +55,18 @@ var errorHandler = (err, req, res, next) => {
 var verifyToken = function (req, res, next) {
     let jwtToken = req.headers['authorization'];
 
-    if (process.env.NODE_ENV !== 'test') {
-        azureJWT.verify(jwtToken, azureConfig).then(function(decoded) {
-            // success callback
-            next();
-        }, function(error) {
-        // error callback
-            return res.status(401).json({
-                errors: {
-                    status: 401,
-                    title: "Authentication failed",
-                    detail: error.message
-                }
-            });
+    if (!jwtToken) {
+        return res.status(401).json({
+            errors: {
+                status: 401,
+                title: "Authentication failed",
+                detail: "No jwt token in header"
+            }
         });
+    }
+
+    if (process.env.NODE_ENV !== 'test') {
+        validateJwt(res, next, jwtToken, azureConfig);
     } else {
         jwt.verify(jwtToken, secret, function(err) {
             if (err) {
