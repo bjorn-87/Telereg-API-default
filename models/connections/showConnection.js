@@ -32,6 +32,7 @@ var showConnection = async function(params, res) {
         };
 
     if (!teleregId || isNaN(teleregId)) {
+        console.error("BAD REQUEST: Param id missing in url or param id is not a number");
         return res.status(400).json({
             errors: {
                 status: 400,
@@ -69,6 +70,7 @@ var showConnection = async function(params, res) {
                 data: data
             });
         } catch (err) {
+            console.error(err.message);
             return res.status(500).json({
                 "errors": {
                     "status": 500,

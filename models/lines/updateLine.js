@@ -35,6 +35,7 @@ const updateLine = async function(body, res) {
                 .query('SELECT Id, TeleregNumber FROM Teletr WHERE Id = @id AND Deleted IS NULL');
 
             if (searchId.recordset.length === 0) {
+                console.error("NOT FOUND: ID not in database");
                 return res.status(404).json({
                     "errors": {
                         "status": 404,
@@ -77,6 +78,7 @@ const updateLine = async function(body, res) {
                 return res.status(200).send();
             }
         } catch (err) {
+            console.error(err.message);
             return res.status(500).json({
                 "errors": {
                     "status": 500,
@@ -86,6 +88,7 @@ const updateLine = async function(body, res) {
             });
         }
     } else {
+        console.error("BAD REQUEST: id missing in body");
         return res.status(400).json({
             "errors": {
                 "status": 400,

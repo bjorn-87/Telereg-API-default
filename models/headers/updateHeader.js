@@ -95,6 +95,7 @@ const updateHeader = async function(body, res) {
 
                     // New Number exists
                     if (searchNewNumber.recordset.length !== 0) {
+                        console.error("DUPLICATE: Number exists");
                         return res.status(409).json({
                             "error": {
                                 "status": 409,
@@ -157,6 +158,7 @@ const updateHeader = async function(body, res) {
                             return res.status(204).send();
                         } catch (err) {
                             await transaction.rollback();
+                            console.error(err.message);
                             return res.status(500).json({
                                 "errors": {
                                     "status": 500,
@@ -174,6 +176,7 @@ const updateHeader = async function(body, res) {
                     return res.status(204).send();
                 }
             } else {
+                console.error("NOT FOUND: Id not found");
                 return res.status(404).json({
                     "errors": {
                         "status": 404,
@@ -183,6 +186,7 @@ const updateHeader = async function(body, res) {
                 });
             }
         } catch (err) {
+            console.error(err.message);
             return res.status(500).json({
                 "errors": {
                     "status": 500,
@@ -192,6 +196,7 @@ const updateHeader = async function(body, res) {
             });
         }
     } else {
+        console.error("BAD REQUEST: Number and/or id missing in body");
         return res.status(400).json({
             "errors": {
                 "status": 400,

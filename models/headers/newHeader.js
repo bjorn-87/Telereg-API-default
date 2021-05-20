@@ -29,6 +29,7 @@ const newHeader = async function(body, res) {
                 .query('SELECT Number FROM Telereg WHERE Number = @number AND Deleted IS NULL');
 
             if (searchNumber.recordset.length > 0) {
+                console.error("CONFLICT: Duplicate entry");
                 return res.status(409).json({
                     "errors": {
                         "status": 409,
@@ -69,6 +70,7 @@ const newHeader = async function(body, res) {
                 });
             }
         } catch (err) {
+            console.error(err.message);
             return res.status(500).json({
                 "errors": {
                     "status": 500,
@@ -78,6 +80,7 @@ const newHeader = async function(body, res) {
             });
         }
     } else {
+        console.error("BAD REQUEST: Number missing in body");
         return res.status(400).json({
             "errors": {
                 "status": 400,

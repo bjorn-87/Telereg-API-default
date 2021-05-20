@@ -15,6 +15,7 @@ var connectionReport = async function(query, res) {
         nrto = query.nrto ? query.nrto : '9999';
 
     if (!rack || !field) {
+        console.error("Rack or field not in querystring");
         return res.status(400).json({
             errors: {
                 status: 400,
@@ -39,6 +40,7 @@ var connectionReport = async function(query, res) {
                 "data": recordSet
             });
         } catch (err) {
+            console.error(err.message);
             return res.status(500).json({
                 "errors": {
                     "status": 500,

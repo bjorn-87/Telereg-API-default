@@ -10,7 +10,7 @@ var config;
 try {
     config = require('../config/config.js');
 } catch (error) {
-    console.error(error);
+    console.error(error.message);
 }
 
 // secret for jwt_token during tests
@@ -38,6 +38,7 @@ var errorHandler = (err, req, res, next) => {
         return next(err);
     }
 
+    console.error(err.message);
     res.status(err.status || 500).json({
         "errors": [
             {
@@ -56,6 +57,7 @@ var verifyToken = function (req, res, next) {
     let jwtToken = req.headers['authorization'];
 
     if (!jwtToken) {
+        console.error("Authentication failed: No jwt token in header");
         return res.status(401).json({
             errors: {
                 status: 401,
@@ -70,6 +72,7 @@ var verifyToken = function (req, res, next) {
     } else {
         jwt.verify(jwtToken, secret, function(err) {
             if (err) {
+                console.error(err.message);
                 return res.status(401).json({
                     errors: {
                         status: 401,

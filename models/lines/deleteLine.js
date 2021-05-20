@@ -23,6 +23,7 @@ const deleteLine = async function(body, res) {
                 .query('SELECT Id FROM Teletr WHERE Id = @id AND Deleted IS NULL');
 
             if (searchId.recordset.length === 0) {
+                console.error("NOT FOUND: No line found");
                 return res.status(404).json({
                     "errors": {
                         "status": 404,
@@ -39,6 +40,7 @@ const deleteLine = async function(body, res) {
                 return res.status(204).send();
             }
         } catch (err) {
+            console.error(err.message);
             return res.status(500).json({
                 "errors": {
                     "status": 500,
@@ -48,6 +50,7 @@ const deleteLine = async function(body, res) {
             });
         }
     } else {
+        console.error("BAD REQUEST: Id missing in body");
         return res.status(400).json({
             "errors": {
                 "status": 400,

@@ -36,6 +36,7 @@ var showAll = async function(req, res) {
 
         return res.status(200).json(data);
     } catch (err) {
+        console.error(err.message);
         return res.status(500).json({
             "errors": {
                 "status": 500,
@@ -58,6 +59,7 @@ var countAll = async function(res) {
 
         return result.recordset[0].Total;
     } catch (error) {
+        console.error(error.message);
         return res.status(500).json({
             "errors": {
                 "status": 500,

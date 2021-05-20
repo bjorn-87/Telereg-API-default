@@ -38,7 +38,7 @@ GO
 
 DECLARE @counter INT
 SET @counter=1
-WHILE ( @counter <= 1000 )
+WHILE ( @counter <= 100 )
 BEGIN
 	INSERT INTO Telereg (Number) VALUES (@counter)
 	SET @counter = @counter + 1

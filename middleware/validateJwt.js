@@ -43,6 +43,7 @@ function validateJwt(res, next, token, config) {
             //This will display the decoded JWT token.
             // console.log(decoded);
             if (err) {
+                console.error(err.message);
                 return res.status(401).json({
                     errors: {
                         status: 401,
@@ -55,6 +56,7 @@ function validateJwt(res, next, token, config) {
             next();
         });
     } else {
+        console.error("Authentication error: Invalid token");
         return res.status(401).json({
             errors: {
                 status: 401,

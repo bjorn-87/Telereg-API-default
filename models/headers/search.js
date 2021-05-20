@@ -63,6 +63,7 @@ var search = async function(req, res) {
 
             return res.status(200).json(data);
         } catch (err) {
+            console.error(err.message);
             return res.status(500).json({
                 "errors": {
                     "status": 500,
@@ -72,6 +73,7 @@ var search = async function(req, res) {
             });
         }
     } else {
+        console.error("PAGE NOT FOUND: Parameter 'search' is missing or has no value");
         return res.status(404).json({
             errors: {
                 "status": 404,

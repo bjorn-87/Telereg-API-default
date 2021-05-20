@@ -14,6 +14,7 @@ var deleteConnection = async function(body, res) {
         teleregNumber;
 
     if (!teleregId) {
+        console.error("BAD REQUEST: Id not in body");
         return res.status(400).json({
             "errors": {
                 "status": 400,
@@ -59,6 +60,7 @@ var deleteConnection = async function(body, res) {
                         return res.status(204).send();
                     } catch (err) {
                         await transaction.rollback();
+                        console.error(err.message);
                         return res.status(500).json({
                             "error": {
                                 "status": 500,
@@ -77,6 +79,7 @@ var deleteConnection = async function(body, res) {
                     return res.status(204).send();
                 }
             } else {
+                console.error("NOT FOUND: Id not found in database");
                 return res.status(404).json({
                     "errors": {
                         "status": 404,
@@ -86,6 +89,7 @@ var deleteConnection = async function(body, res) {
                 });
             }
         } catch (err) {
+            console.error(err.message);
             return res.status(500).json({
                 "errors": {
                     "status": 500,

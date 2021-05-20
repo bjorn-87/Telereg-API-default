@@ -17,6 +17,7 @@ const newLine = async function(body, res) {
 
     // Checks if teleregId is not a number
     if (isNaN(teleregId)) {
+        console.error("BAD REQUEST: Id is not a number");
         return res.status(400).json({
             "errors": {
                 "status": 400,
@@ -38,6 +39,7 @@ const newLine = async function(body, res) {
 
             // If no row returned, return Not Found
             if (searchNumber.recordset.length === 0) {
+                console.error("NOT FOUND: No header to connect to");
                 return res.status(404).json({
                     "errors": {
                         "status": 404,
@@ -78,15 +80,17 @@ const newLine = async function(body, res) {
                 });
             }
         } catch (err) {
+            console.error(err.message);
             return res.status(500).json({
                 "errors": {
                     "status": 500,
                     "title": "INTERNAL SERVER ERROR",
-                    "detail": "Database error " + err.message
+                    "detail": "Database error "
                 }
             });
         }
     } else {
+        console.error("BAD REQUEST: teleregid missing in body");
         return res.status(400).json({
             "errors": {
                 "status": 400,
