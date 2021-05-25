@@ -18,11 +18,12 @@ AUD=api://
 ```
 General settings
 ```
-NODE_ENV=development
+NODE_ENV=production
 NODE_PORT=8080
 ```
-For Testing purposes:
+For Testing and dev purposes:
 ```
+NODE_ENV=development
 JWT_SECRET=secret (64 characters secure token for testing purposes)
 DEV_DATABASE=database
 DEV_DB_USER=username

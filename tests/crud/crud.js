@@ -85,7 +85,7 @@ describe('Test CRUD for connections without lines', () => {
         });
     });
     describe('POST /headers (create the same post again)', () => {
-        it('409 CREATED', (done) => {
+        it('409 CONFLICT', (done) => {
             chai.request(server)
                 .post(crudHeaderUrl)
                 .set("authorization", token)
@@ -116,13 +116,42 @@ describe('Test CRUD for connections without lines', () => {
                 });
         });
         describe('DELETE /connections (Delete the created post)', () => {
-            it('204 NO CONTEND', (done) => {
+            it('204 NO CONTENT', (done) => {
                 chai.request(server)
                     .delete(crudConnection)
                     .set("authorization", token)
                     .send({"id": id})
                     .end((err, res) => {
                         res.should.have.status(204);
+
+                        done();
+                    });
+            });
+        });
+        describe('GET /headers with limit=100', () => {
+            it('200 OK', (done) => {
+                chai.request(server)
+                    .get(crudHeaderUrl + "?limit=100")
+                    .set("authorization", token)
+                    .end((err, res) => {
+                        res.should.have.status(200);
+                        res.body.should.be.an("object");
+                        res.body.data.should.be.an("array");
+                        res.body.data.length.should.be.equal(100);
+                        res.body.total.should.be.an("number");
+
+                        done();
+                    });
+            });
+        });
+        describe('DELETE /connections (Delete the created posta again)', () => {
+            it('404 NOT FOUND', (done) => {
+                chai.request(server)
+                    .delete(crudConnection)
+                    .set("authorization", token)
+                    .send({"id": id})
+                    .end((err, res) => {
+                        res.should.have.status(404);
 
                         done();
                     });
@@ -138,6 +167,21 @@ describe('Test CRUD for connections without lines', () => {
                     res.should.have.status(400);
                     res.body.should.be.an("object");
                     res.body.errors.title.should.be.equal("Bad request");
+
+                    done();
+                });
+        });
+    });
+    describe('DELETE /connections (with string in param)', () => {
+        it('500 DATABASE ERROR', (done) => {
+            chai.request(server)
+                .delete(crudConnection)
+                .set("authorization", token)
+                .send({"id": "Test"})
+                .end((err, res) => {
+                    res.should.have.status(500);
+                    res.body.should.be.an("object");
+                    res.body.errors.title.should.be.equal("INTERNAL SERVER ERROR");
 
                     done();
                 });
@@ -209,6 +253,38 @@ describe('Test CRUD for connections with lines', () => {
                     });
             });
         });
+        describe('POST /lines (CREATE LINE WITH STRING AS TELEREGID)', () => {
+            it('400 BAD REQUEST', (done) => {
+                chai.request(server)
+                    .post(crudLinesUrl)
+                    .set("authorization", token)
+                    .send({teleregid: "TEST"})
+                    .end((err, res) => {
+                        res.should.have.status(400);
+                        res.body.should.be.an("object");
+                        res.body.errors.title.should.be.an("string");
+                        res.body.errors.title.should.be.equal("BAD REQUEST");
+
+                        done();
+                    });
+            });
+        });
+        describe('POST /lines (CREATE LINE WITH TELEREGID THAT DOES NOT EXIST)', () => {
+            it('404 NOT FOUND', (done) => {
+                chai.request(server)
+                    .post(crudLinesUrl)
+                    .set("authorization", token)
+                    .send({teleregid: 1200})
+                    .end((err, res) => {
+                        res.should.have.status(404);
+                        res.body.should.be.an("object");
+                        res.body.errors.title.should.be.an("string");
+                        res.body.errors.title.should.be.equal("Not Found");
+
+                        done();
+                    });
+            });
+        });
         describe('GET /connections (Get connection with id)', () => {
             it('200 OK', (done) => {
                 chai.request(server)
@@ -238,6 +314,44 @@ describe('Test CRUD for connections with lines', () => {
                         });
                 });
             });
+            describe('PUT /lines (update line with id that does not exist)', () => {
+                it('404 NOT FOUND', (done) => {
+                    chai.request(server)
+                        .put(crudLinesUrl)
+                        .set("authorization", token)
+                        .send({id: 1300, position: 5, note: "test", rack: "test"})
+                        .end((err, res) => {
+                            res.should.have.status(404);
+
+                            done();
+                        });
+                });
+            });
+            describe('PUT /lines (update line with string as id)', () => {
+                it('500 INTERNAL SERVER ERROR', (done) => {
+                    chai.request(server)
+                        .put(crudLinesUrl)
+                        .set("authorization", token)
+                        .send({id: "TEST", position: 5, note: "test", rack: "test"})
+                        .end((err, res) => {
+                            res.should.have.status(500);
+
+                            done();
+                        });
+                });
+            });
+            describe('PUT /lines (update line with no id in body)', () => {
+                it('400 BAD REQUEST', (done) => {
+                    chai.request(server)
+                        .put(crudLinesUrl)
+                        .set("authorization", token)
+                        .end((err, res) => {
+                            res.should.have.status(400);
+
+                            done();
+                        });
+                });
+            });
             describe('DELETE /lines (Delete the created line)', () => {
                 it('204 NO CONTENT', (done) => {
                     chai.request(server)
@@ -246,6 +360,44 @@ describe('Test CRUD for connections with lines', () => {
                         .send({id: line})
                         .end((err, res) => {
                             res.should.have.status(204);
+
+                            done();
+                        });
+                });
+            });
+            describe('DELETE /lines (Delete the created line again)', () => {
+                it('404 NOT FOUND', (done) => {
+                    chai.request(server)
+                        .delete(crudLinesUrl)
+                        .set("authorization", token)
+                        .send({id: line})
+                        .end((err, res) => {
+                            res.should.have.status(404);
+
+                            done();
+                        });
+                });
+            });
+            describe('DELETE /lines (DELETE LINES WITHOUT ID)', () => {
+                it('400 BAD REQUEST', (done) => {
+                    chai.request(server)
+                        .delete(crudLinesUrl)
+                        .set("authorization", token)
+                        .end((err, res) => {
+                            res.should.have.status(400);
+
+                            done();
+                        });
+                });
+            });
+            describe('DELETE /lines (DELETE LINES WITH STRING AS ID)', () => {
+                it('500 INTERNAL SERVER ERROR', (done) => {
+                    chai.request(server)
+                        .delete(crudLinesUrl)
+                        .set("authorization", token)
+                        .send({id: "test"})
+                        .end((err, res) => {
+                            res.should.have.status(500);
 
                             done();
                         });
@@ -274,6 +426,97 @@ describe('Test CRUD for connections with lines', () => {
                         .send({id: id, number: "test12345"})
                         .end((err, res) => {
                             res.should.have.status(204);
+
+                            done();
+                        });
+                });
+            });
+            describe('PUT /headers (EDIT HEADER THAT DOES NOT EXIST)', () => {
+                it('404 NOT FOUND', (done) => {
+                    chai.request(server)
+                        .put(crudHeaderUrl)
+                        .set("authorization", token)
+                        .send({id: 1200, number: "test12345"})
+                        .end((err, res) => {
+                            res.should.have.status(404);
+
+                            done();
+                        });
+                });
+            });
+            describe('PUT /headers (EDIT HEADER WITHOUT ID)', () => {
+                it('400 BAD REQUEST', (done) => {
+                    chai.request(server)
+                        .put(crudHeaderUrl)
+                        .set("authorization", token)
+                        .send({number: "test12345"})
+                        .end((err, res) => {
+                            res.should.have.status(400);
+
+                            done();
+                        });
+                });
+            });
+            describe('PUT /headers (EDIT HEADER WITHOUT NUMBER)', () => {
+                it('400 BAD REQUEST', (done) => {
+                    chai.request(server)
+                        .put(crudHeaderUrl)
+                        .set("authorization", token)
+                        .send({id: 1})
+                        .end((err, res) => {
+                            res.should.have.status(400);
+
+                            done();
+                        });
+                });
+            });
+            describe('PUT /headers (EDIT HEADER TRY CHANGING TO NUMBER THAT EXISTS)', () => {
+                it('409 DUPLICATE', (done) => {
+                    chai.request(server)
+                        .put(crudHeaderUrl)
+                        .set("authorization", token)
+                        .send({id: 1, number: "test12345"})
+                        .end((err, res) => {
+                            res.should.have.status(409);
+
+                            done();
+                        });
+                });
+            });
+            describe('PUT /headers (EDIT HEADER WITH SAME ID AND NUMBER)', () => {
+                it('204 CONTENT', (done) => {
+                    chai.request(server)
+                        .put(crudHeaderUrl)
+                        .set("authorization", token)
+                        .send({id: 1, number: "122/0037", drawing: "test"})
+                        .end((err, res) => {
+                            res.should.have.status(204);
+
+                            done();
+                        });
+                });
+            });
+            describe('PUT /headers (EDIT HEADER WITH NEW NUMBER AND NO LINES CONNECTED)', () => {
+                it('204 CONTENT', (done) => {
+                    chai.request(server)
+                        .put(crudHeaderUrl)
+                        .set("authorization", token)
+                        .send({id: 6, number: "testing", drawing: "test"})
+                        .end((err, res) => {
+                            res.should.have.status(204);
+
+                            done();
+                        });
+                });
+            });
+            describe('PUT /headers (EDIT HEADER WITH STRING AS ID)', () => {
+                it('500 INTERNAL SERVER ERROR', (done) => {
+                    chai.request(server)
+                        .put(crudHeaderUrl)
+                        .set("authorization", token)
+                        .send({id: "TEST", number: "testing"})
+                        .end((err, res) => {
+                            res.should.have.status(500);
 
                             done();
                         });
