@@ -1,4 +1,4 @@
-USE [LKTelereg]
+USE [Teleregistret]
 GO
 
 -- Drop tables

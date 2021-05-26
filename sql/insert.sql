@@ -2,7 +2,7 @@
 -- Diffrent queries for testing.
 --
 
-USE [LKTelereg]
+USE [Teleregistret]
 GO
 
 INSERT INTO Telereg (Number, Name, Func, Address, Drawing, Apptype, Document, UserId, ApptypeTwo, UserFullName, Other) 
