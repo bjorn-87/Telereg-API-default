@@ -21,7 +21,7 @@
     "jsonwebtoken": "^8.5.1",
     "jwks-rsa": "^2.0.3",
     "morgan": "^1.10.0",
-    "mssql": "^6.3.1"
+    "mssql": "^6.4.0"
   },
   "devDependencies": {
     "chai": "^4.3.4",
